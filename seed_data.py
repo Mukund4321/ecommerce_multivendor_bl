@@ -29,9 +29,7 @@ def safe_email(index):
 def safe_seller_email(index):
     return f"seller_{index}_{random.randint(1000,9999)}@shop.com"
 
-# ════════════════════════════════════════════
-# 1. USERS
-# ════════════════════════════════════════════
+
 print("\n[1/13] Inserting users...")
 seller_user_ids = []
 for i in range(NUM_SELLERS):
@@ -65,9 +63,8 @@ cursor.execute("SELECT id FROM users WHERE role = 'customer'")
 customer_ids = [row[0] for row in cursor.fetchall()]
 print(f"  Done — {len(customer_ids)} customers + {len(seller_user_ids)} sellers")
 
-# ════════════════════════════════════════════
-# 2. ADDRESSES
-# ════════════════════════════════════════════
+
+
 print("\n[2/13] Inserting addresses...")
 cities    = ['Mumbai','Delhi','Chennai','Bangalore','Hyderabad','Pune','Kolkata','Ahmedabad']
 states    = ['Maharashtra','Delhi','Tamil Nadu','Karnataka','Telangana','Maharashtra','West Bengal','Gujarat']
@@ -105,9 +102,7 @@ cursor.execute("SELECT id FROM addresses")
 all_address_ids = [row[0] for row in cursor.fetchall()]
 print(f"  Done — {len(all_address_ids)} addresses")
 
-# ════════════════════════════════════════════
-# 3. CUSTOMER PROFILES
-# ════════════════════════════════════════════
+
 print("\n[3/13] Inserting customer profiles...")
 batch = []
 for uid in customer_ids:
@@ -127,9 +122,7 @@ if batch:
     conn.commit()
 print(f"  Done — {len(customer_ids)} customer profiles")
 
-# ════════════════════════════════════════════
-# 4. SELLER PROFILES
-# ════════════════════════════════════════════
+
 print("\n[4/13] Inserting seller profiles...")
 seller_names = [
     'Samsung Official Store',
@@ -153,9 +146,7 @@ for i, uid in enumerate(seller_user_ids):
 conn.commit()
 print(f"  Done — {NUM_SELLERS} seller profiles")
 
-# ════════════════════════════════════════════
-# 5. BRANDS
-# ════════════════════════════════════════════
+
 print("\n[5/13] Inserting brands...")
 brand_names = [
     'Samsung','Nike','Apple','boAt','Puma','Sony',
@@ -172,9 +163,6 @@ for name in brand_names:
 conn.commit()
 print(f"  Done — {len(brand_ids)} brands")
 
-# ════════════════════════════════════════════
-# 6. CATEGORIES
-# ════════════════════════════════════════════
 print("\n[6/13] Inserting categories...")
 root_categories = ['Electronics','Fashion','Sports','Home and Kitchen','Books']
 root_ids = []
@@ -203,9 +191,7 @@ for parent_id, subs in sub_map.items():
 conn.commit()
 print(f"  Done — {len(category_ids)} categories")
 
-# ════════════════════════════════════════════
-# 7. WAREHOUSES
-# ════════════════════════════════════════════
+
 print("\n[7/13] Inserting warehouses...")
 warehouse_data = [
     ('Mumbai Warehouse',  'Mumbai, Maharashtra',  50000),
@@ -222,9 +208,7 @@ for name, loc, cap in warehouse_data:
 conn.commit()
 print(f"  Done — {len(warehouse_ids)} warehouses")
 
-# ════════════════════════════════════════════
-# 8. PRODUCTS + PRODUCT_CATEGORIES + PRODUCT_IMAGES
-# ════════════════════════════════════════════
+
 print("\n[8/13] Inserting products...")
 product_names = [
     'Samsung Galaxy S24','iPhone 15 Pro','Nike Air Max',
@@ -282,9 +266,7 @@ cursor.executemany("""
 conn.commit()
 print(f"  Done — {len(product_ids)} products + images")
 
-# ════════════════════════════════════════════
-# 9. INVENTORY + STOCK_MOVEMENTS
-# ════════════════════════════════════════════
+
 print("\n[9/13] Inserting inventory...")
 inv_batch = []
 mov_batch = []
@@ -307,9 +289,7 @@ cursor.executemany("""
 conn.commit()
 print(f"  Done — {len(inv_batch)} inventory rows")
 
-# ════════════════════════════════════════════
-# 10. COUPONS
-# ════════════════════════════════════════════
+
 print("\n[10/13] Inserting coupons...")
 coupon_data = [
     ('SAVE10',    'percentage', 10,  100, 500),
@@ -330,9 +310,7 @@ for code, ctype, val, max_uses, min_order in coupon_data:
 conn.commit()
 print(f"  Done — {len(coupon_ids)} coupons")
 
-# ════════════════════════════════════════════
-# 11. ORDERS — 1 CRORE
-# ════════════════════════════════════════════
+
 print(f"\n[11/13] Inserting {NUM_ORDERS:,} orders — grab a coffee, this will take a while...")
 statuses = ['pending','confirmed','shipped','delivered','cancelled']
 weights  = [5, 10, 15, 65, 5]
@@ -376,9 +354,7 @@ if batch:
 
 print(f"  Done — {total_orders:,} orders inserted")
 
-# ════════════════════════════════════════════
-# 12. ORDER_ITEMS + PAYMENTS + PAYMENT_TRANSACTIONS + INVOICES
-# ════════════════════════════════════════════
+
 print("\n[12/13] Inserting order items, payments, transactions, invoices...")
 
 # fetch orders in chunks
@@ -481,9 +457,7 @@ while True:
 
 print(f"  Done — {total_items:,} order items | {total_payments:,} payments")
 
-# ════════════════════════════════════════════
-# 13. REVIEWS + RATINGS + RETURNS + REFUNDS + COUPON_USAGE
-# ════════════════════════════════════════════
+
 print("\n[13/13] Inserting reviews, ratings, returns, refunds, coupon usage...")
 
 # reviews + ratings
@@ -585,9 +559,6 @@ cursor.executemany("""
 conn.commit()
 print(f"  Coupon usage: {len(cup_batch)}")
 
-# ════════════════════════════════════════════
-# COMPLETE
-# ════════════════════════════════════════════
 cursor.close()
 conn.close()
 print("\n" + "="*50)
