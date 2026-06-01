@@ -1,10 +1,6 @@
 USE ecommerce;
 
--- ═══════════════════════════════════════════════════════
--- IMPORTANT — RUN THIS BEFORE ANYTHING ELSE
--- Changes the statement terminator so MySQL does not
--- confuse semicolons inside procedures with end of query
--- ═══════════════════════════════════════════════════════
+
 
 
 -- P1 and P2 — place_order procedure with FOR UPDATE to prevent race conditions and full ROLLBACK on failure
